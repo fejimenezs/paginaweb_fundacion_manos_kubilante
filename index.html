@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fundación Social Afrocolombiana Manos Kubilantes</title>
+  <meta name="description" content="Fundación Social Afrocolombiana Manos Kubilantes — Preservamos y visibilizamos la cultura, los saberes y la memoria afrocolombiana." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --fire:       #D4621A;
+      --fire-light: #E8892A;
+      --amber:      #F2A83B;
+      --dark:       #0D0805;
+      --dark2:      #110906;
+      --dark3:      #1A0E07;
+      --text:       #F4EBD9;
+      --muted:      #A08060;
+      --border:     rgba(212, 98, 26, 0.18);
+      --glass-bg:   rgba(20, 12, 6, 0.55);
+      --wa-green:   #25D366;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; cursor: none; }
+    button { cursor: none; }
+
+    /* ══ GRAIN OVERLAY ══════════════════════════════════ */
+    .grain-svg { position: absolute; width: 0; height: 0; }
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9990;
+      pointer-events: none;
+      opacity: 0.038;
+      filter: url(#grain);
+      background: white;
+    }
+
+    /* ══ CUSTOM CURSOR ══════════════════════════════════ */
+    .cursor-dot {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--fire);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      left: -20px; top: -20px;
+      transform: translate(-50%, -50%);
+      transition: background 0.2s;
+      will-change: left, top;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 38px; height: 38px;
+      border: 1.5px solid rgba(212,98,26,0.55);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      left: -20px; top: -20px;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+      will-change: left, top;
+    }
+    .cursor-ring.hovered {
+      width: 58px; height: 58px;
+      border-color: var(--fire);
+    }
+
+    /* ══ AFRICAN PATTERN ════════════════════════════════ */
+    .afro-pattern {
+      background-image:
+        repeating-linear-gradient(45deg,  rgba(212,98,26,0.055) 0px, rgba(212,98,26,0.055) 1px, transparent 1px, transparent 22px),
+        repeating-linear-gradient(-45deg, rgba(242,168,59,0.035) 0px, rgba(242,168,59,0.035) 1px, transparent 1px, transparent 22px);
+      background-size: 22px 22px;
+    }
+
+    /* ══ WHATSAPP FLOAT ══════════════════════════════════ */
+    .wa-float {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      z-index: 9991;
+      width: 3.5rem; height: 3.5rem;
+      background: var(--wa-green);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(37,211,102,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .wa-float:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 8px 32px rgba(37,211,102,0.5); }
+    .wa-float svg { color: white; }
+    .wa-pulse {
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      background: var(--wa-green);
+      opacity: 0.45;
+      animation: wa-ring 2.5s ease-out infinite;
+    }
+    @keyframes wa-ring { 0%{transform:scale(1);opacity:0.45} 100%{transform:scale(1.9);opacity:0} }
+
+    /* ══ NAV ════════════════════════════════════════════ */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 1.6rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background 0.4s, padding 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    #navbar.solid {
+      background: rgba(11,7,4,0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 1rem 4rem;
+      border-color: var(--border);
+    }
+    .nav-brand { display: flex; flex-direction: column; }
+    .nav-brand-main {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.35rem;
+      letter-spacing: 0.14em;
+      color: var(--fire-light);
+      line-height: 1;
+    }
+    .nav-brand-sub {
+      font-size: 0.52rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+    .nav-links {
+      display: flex; gap: 2.4rem;
+      list-style: none; align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-cta {
+      padding: 0.6rem 1.5rem;
+      background: var(--fire);
+      color: white !important;
+      font-weight: 600;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background 0.3s !important;
+    }
+    .nav-cta:hover { background: var(--amber) !important; color: var(--dark) !important; }
+
+    /* ══ HERO ═══════════════════════════════════════════ */
+    .hero {
+      height: 100vh; min-height: 700px;
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('assets/img/eventos/entrevistas-grupo-banner.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      transform: scale(1.07);
+      transition: transform 12s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .hero-bg.zoomed { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        105deg,
+        rgba(11,7,4,0.92) 0%,
+        rgba(11,7,4,0.82) 45%,
+        rgba(11,7,4,0.3)  70%,
+        rgba(11,7,4,0.7)  100%
+      );
+    }
+
+    /* Hero left column */
+    .hero-left {
+      position: relative; z-index: 2;
+      padding: 0 4rem 0 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 2rem;
+    }
+    .hero-eyebrow span {
+      display: block; width: 2.2rem; height: 1px; background: var(--amber);
+    }
+    .hero-headline {
+      margin-bottom: 2.5rem;
+    }
+    .hero-headline .outlined {
+      display: block;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(5rem, 11vw, 10rem);
+      line-height: 0.85;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--fire);
+      letter-spacing: 0.04em;
+      user-select: none;
+    }
+    .hero-headline .solid {
+      display: block;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(5rem, 11vw, 10rem);
+      line-height: 0.85;
+      color: var(--fire-light);
+      letter-spacing: 0.04em;
+    }
+    .hero-tagline {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.8rem;
+    }
+    .hero-tagline::before, .hero-tagline::after {
+      content: ''; display: block;
+      width: 1.5rem; height: 1px; background: var(--muted);
+    }
+    .hero-desc {
+      font-size: 0.97rem; color: var(--muted);
+      max-width: 420px; line-height: 1.8;
+      margin-bottom: 2.8rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* Hero right column */
+    .hero-right {
+      position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      height: 100%;
+    }
+    .hero-img-wrap {
+      position: relative; width: 380px; max-width: 90%;
+    }
+    .hero-portrait {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top;
+      clip-path: polygon(0 0, 90% 0, 100% 8%, 100% 100%, 10% 100%, 0 92%);
+      filter: saturate(0.9) contrast(1.05);
+    }
+    .hero-img-border {
+      position: absolute;
+      top: -10px; left: -10px; right: 10px; bottom: 10px;
+      clip-path: polygon(0 0, 90% 0, 100% 8%, 100% 100%, 10% 100%, 0 92%);
+      border: 1px solid rgba(212,98,26,0.35);
+      pointer-events: none;
+    }
+    .hero-img-accent {
+      position: absolute;
+      bottom: -1.5rem; right: -1.5rem;
+      width: 60%; height: 40%;
+      background: var(--fire);
+      opacity: 0.1;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    /* Rotating circular text */
+    .hero-circle-wrap {
+      position: absolute;
+      bottom: 3rem; right: -2rem;
+      width: 140px; height: 140px;
+      animation: spin 22s linear infinite;
+    }
+    .hero-circle-wrap svg { width: 100%; height: 100%; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Glassmorphism stats card */
+    .hero-stats-card {
+      position: absolute;
+      bottom: 3rem; left: -2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(212,98,26,0.25);
+      padding: 1.4rem 1.8rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .hero-stat-item { display: flex; align-items: baseline; gap: 0.4rem; }
+    .hero-stat-num {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem; color: var(--fire-light); line-height: 1;
+    }
+    .hero-stat-lbl {
+      font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem; left: 4rem;
+      z-index: 3;
+      display: flex; align-items: center; gap: 0.8rem;
+      font-size: 0.58rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scroll-hint-line {
+      width: 3rem; height: 1px;
+      background: linear-gradient(to right, var(--fire), transparent);
+      animation: pulse-line 2s ease-in-out infinite;
+    }
+    @keyframes pulse-line { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ══ MARQUEE ════════════════════════════════════════ */
+    .marquee-wrap {
+      overflow: hidden;
+      background: var(--fire);
+      padding: 0.85rem 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      white-space: nowrap;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 1.5rem;
+      padding: 0 1.5rem;
+    }
+    .marquee-item span {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1rem; letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.88);
+    }
+    .marquee-dot {
+      width: 5px; height: 5px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ══ SECTION SHARED ══════════════════════════════════ */
+    section { padding: 8rem 4rem; position: relative; }
+    .inner { max-width: 1200px; margin: 0 auto; }
+    .sec-head { position: relative; margin-bottom: 5rem; }
+    .sec-num {
+      position: absolute;
+      top: -0.5em; right: -1rem;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(8rem, 14vw, 13rem);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(212,98,26,0.1);
+      line-height: 1;
+      pointer-events: none; user-select: none;
+    }
+    .sec-tag {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--fire); margin-bottom: 0.8rem;
+    }
+    .sec-tag::before {
+      content: ''; display: block;
+      width: 1.4rem; height: 1px; background: var(--fire);
+    }
+    h2.sec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 900; line-height: 1.05;
+    }
+    h2.sec-title em { color: var(--fire-light); font-style: italic; }
+    .sec-body { color: var(--muted); line-height: 1.9; font-size: 0.96rem; }
+    .sec-body p + p { margin-top: 1rem; }
+
+    /* BUTTONS */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: var(--fire); color: white;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .btn-primary:hover { background: var(--amber); transform: translateY(-2px); color: var(--dark); }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: var(--wa-green); color: white;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: filter 0.3s, transform 0.3s;
+    }
+    .btn-wa:hover { filter: brightness(1.12); transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      border: 1px solid var(--border); color: var(--muted);
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--fire); color: var(--fire-light); }
+
+    /* ══ STATS BAR ═══════════════════════════════════════ */
+    .stats-bar {
+      background: var(--dark2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 4rem;
+    }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat {
+      padding: 1rem 2.5rem;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .stat:first-child { padding-left: 0; }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 3.5rem; color: var(--fire-light); line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-lbl {
+      font-size: 0.68rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ══ NOSOTROS ════════════════════════════════════════ */
+    #nosotros { background: var(--dark); }
+    .nosotros-grid {
+      display: grid; grid-template-columns: 1fr 1.1fr;
+      gap: 7rem; align-items: center;
+    }
+    .nosotros-img-wrap { position: relative; }
+    .nosotros-img-wrap img {
+      width: 100%; aspect-ratio: 3/4;
+      object-fit: cover; object-position: top;
+      clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
+      filter: saturate(0.85);
+    }
+    .nosotros-img-border {
+      position: absolute;
+      top: -10px; left: -10px; right: 10px; bottom: 10px;
+      clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
+      border: 1px solid var(--border);
+      pointer-events: none;
+    }
+    .nosotros-img-accent {
+      position: absolute;
+      bottom: -2rem; right: -2rem;
+      width: 55%; height: 42%;
+      background: var(--fire); opacity: 0.08;
+    }
+    .valores {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.8rem; margin-top: 2.5rem;
+    }
+    .valor {
+      padding: 1.2rem 1.4rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .valor::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 2px; height: 100%;
+      background: var(--fire);
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform 0.4s ease;
+    }
+    .valor:hover::before { transform: scaleY(1); }
+    .valor:hover { border-color: rgba(212,98,26,0.4); background: rgba(212,98,26,0.04); }
+    .valor-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .valor h4 { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.3rem; letter-spacing: 0.04em; }
+    .valor p { font-size: 0.78rem; color: var(--muted); line-height: 1.65; }
+
+    /* ══ PROYECTOS ═══════════════════════════════════════ */
+    #proyectos {
+      background: var(--dark3);
+      border-top: 1px solid var(--border);
+    }
+    .proyectos-grid {
+      display: grid; grid-template-columns: 1.6fr 1fr;
+      gap: 2rem;
+    }
+    .proyecto-featured { position: relative; overflow: hidden; }
+    .proyecto-featured img {
+      width: 100%; aspect-ratio: 16/10;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+      filter: brightness(0.62) saturate(0.9);
+    }
+    .proyecto-featured:hover img { transform: scale(1.04); }
+    .proyecto-featured-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 4rem 2.5rem 2.5rem;
+      background: linear-gradient(to top, rgba(11,7,4,0.98) 0%, rgba(11,7,4,0.4) 60%, transparent 100%);
+    }
+    .proyecto-badge {
+      display: inline-flex;
+      padding: 0.3rem 0.9rem;
+      background: var(--fire);
+      color: white;
+      font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700;
+      margin-bottom: 0.9rem;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .proyecto-featured h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem; font-weight: 900; margin-bottom: 0.7rem;
+    }
+    .proyecto-featured p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+    .proyecto-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      color: var(--amber); font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: gap 0.3s;
+    }
+    .proyecto-link:hover { gap: 1rem; }
+    .proyectos-side { display: flex; flex-direction: column; gap: 1rem; }
+    .proyecto-card {
+      padding: 1.8rem 2rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .proyecto-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 1px; background: var(--fire);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .proyecto-card:hover::after { transform: scaleX(1); }
+    .proyecto-card:hover { border-color: rgba(212,98,26,0.35); background: rgba(212,98,26,0.04); }
+    .proyecto-card .proyecto-badge { margin-bottom: 0.7rem; background: rgba(242,168,59,0.12); color: var(--amber); }
+    .proyecto-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;
+    }
+    .proyecto-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+
+    /* ══ QUOTE ═══════════════════════════════════════════ */
+    .quote-section {
+      padding: 7rem 4rem;
+      background: var(--fire);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .quote-section::before {
+      content: '\201C';
+      position: absolute; top: -5rem; left: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 22rem;
+      color: rgba(255,255,255,0.06);
+      line-height: 1; pointer-events: none;
+    }
+    .quote-section::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg,  rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 22px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 22px);
+      background-size: 22px 22px;
+      pointer-events: none;
+    }
+    .quote-inner { position: relative; z-index: 1; }
+    .quote-section blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.6rem);
+      font-style: italic; line-height: 1.5;
+      max-width: 880px; margin: 0 auto 1.5rem;
+      color: white;
+    }
+    .quote-section cite {
+      font-size: 0.65rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: rgba(255,255,255,0.55); font-style: normal;
+    }
+
+    /* ══ GALERÍA ═════════════════════════════════════════ */
+    #galeria {
+      background: var(--dark2);
+      border-top: 1px solid var(--border);
+      padding-bottom: 4rem;
+    }
+    .galeria-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 3.5rem;
+    }
+    .galeria-item {
+      overflow: hidden; position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease, box-shadow 0.3s;
+    }
+    .galeria-item img {
+      width: 100%; aspect-ratio: 1;
+      object-fit: cover;
+      transition: filter 0.5s ease;
+      filter: saturate(0.75) brightness(0.85);
+    }
+    .galeria-item:hover img { filter: saturate(1.1) brightness(1.05); }
+    .galeria-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .galeria-item:nth-child(1) img { aspect-ratio: auto; height: 100%; }
+    .galeria-item:nth-child(7) { grid-column: span 2; }
+    .galeria-item:nth-child(7) img { aspect-ratio: 2/1; }
+    .galeria-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(212,98,26,0.35) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .galeria-item:hover .galeria-overlay { opacity: 1; }
+
+    /* ══ DONACIONES ══════════════════════════════════════ */
+    #donaciones {
+      background: var(--dark3);
+      border-top: 1px solid var(--border);
+    }
+    .donaciones-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start;
+      margin-bottom: 5rem;
+    }
+    .donaciones-img-wrap { position: relative; }
+    .donaciones-img-wrap img {
+      width: 100%; aspect-ratio: 3/4;
+      object-fit: cover; object-position: top;
+      clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
+      filter: saturate(0.85);
+    }
+    .donaciones-cards {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .donacion-card {
+      padding: 2.2rem 2rem;
+      background: rgba(20,12,6,0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212,98,26,0.18);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .donacion-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,98,26,0.5), transparent);
+      transform: scaleX(0); transform-origin: center;
+      transition: transform 0.5s;
+    }
+    .donacion-card:hover::before { transform: scaleX(1); }
+    .donacion-card:hover {
+      border-color: rgba(212,98,26,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+    .donacion-card.featured { border-color: rgba(212,98,26,0.45); background: rgba(212,98,26,0.08); }
+    .donacion-card.featured::after {
+      content: 'RECOMENDADO';
+      position: absolute; top: 1rem; right: -2.8rem;
+      background: var(--fire); color: white;
+      font-size: 0.5rem; letter-spacing: 0.2em;
+      padding: 0.25rem 3.5rem;
+      transform: rotate(45deg);
+    }
+    .donacion-icon {
+      width: 3rem; height: 3rem;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); color: var(--fire-light);
+      margin-bottom: 1.5rem;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .donacion-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem;
+    }
+    .donacion-card p { font-size: 0.86rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.5rem; }
+    .donacion-detail {
+      padding: 1rem;
+      background: rgba(244,235,217,0.03);
+      border: 1px solid rgba(212,98,26,0.15);
+      font-size: 0.78rem; color: var(--muted);
+      font-family: 'Courier New', monospace;
+      margin-bottom: 1.3rem; line-height: 1.85;
+    }
+    .donacion-detail strong { color: var(--text); }
+    .impacto-box {
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      background: rgba(212,98,26,0.04);
+      backdrop-filter: blur(8px);
+    }
+    .impacto-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem;
+    }
+    .impacto-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .impacto-list li {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.65;
+    }
+    .impacto-list li::before {
+      content: '→'; color: var(--fire); font-size: 0.9rem;
+      flex-shrink: 0; margin-top: 0.05rem;
+    }
+
+    /* ══ CONTACTO ════════════════════════════════════════ */
+    #contacto {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+    }
+    .contacto-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+    .contacto-items { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contacto-item {
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      padding: 1.4rem 1.6rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, background 0.3s;
+      text-decoration: none;
+    }
+    .contacto-item:hover { border-color: var(--fire); background: rgba(212,98,26,0.04); }
+    .contacto-icon {
+      width: 2.8rem; height: 2.8rem;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); color: var(--fire-light);
+      flex-shrink: 0;
+    }
+    .contacto-item-label {
+      font-size: 0.6rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--fire); margin-bottom: 0.25rem;
+    }
+    .contacto-item-value { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.15rem; }
+    .contacto-item-sub { font-size: 0.78rem; color: var(--muted); }
+    .redes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 1.8rem; }
+    .red-social {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, background 0.3s;
+      text-decoration: none;
+    }
+    .red-social:hover { background: rgba(212,98,26,0.05); }
+    .red-social.youtube:hover  { border-color: #FF0000; }
+    .red-social.instagram:hover{ border-color: #E1306C; }
+    .red-social.facebook:hover { border-color: #1877F2; }
+    .red-social.whatsapp:hover { border-color: var(--wa-green); }
+    .red-icon {
+      width: 2.4rem; height: 2.4rem;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 6px; flex-shrink: 0;
+    }
+    .red-icon.yt-bg { background: #FF0000; }
+    .red-icon.ig-bg { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .red-icon.fb-bg { background: #1877F2; }
+    .red-icon.wa-bg { background: var(--wa-green); }
+    .red-icon svg { color: white; }
+    .red-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .red-handle { font-size: 0.72rem; color: var(--muted); }
+    .form-contacto { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .form-group input, .form-group textarea, .form-group select {
+      background: rgba(244,235,217,0.03);
+      border: 1px solid var(--border);
+      color: var(--text); padding: 0.85rem 1rem;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border-color 0.3s; resize: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--fire); }
+    .form-group select { cursor: none; }
+    .form-group select option { background: #1A0E07; }
+    .form-group textarea { min-height: 120px; }
+
+    /* ══ FOOTER ══════════════════════════════════════════ */
+    footer {
+      background: #050301;
+      padding: 5.5rem 4rem 3rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.9rem; letter-spacing: 0.12em;
+      color: var(--fire-light); margin-bottom: 0.15rem;
+    }
+    .footer-logo-sub {
+      font-size: 0.55rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;
+    }
+    .footer-brand p { color: var(--muted); font-size: 0.84rem; line-height: 1.8; max-width: 280px; }
+    .footer-socials { display: flex; gap: 0.6rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .footer-social-btn {
+      width: 2.4rem; height: 2.4rem;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); color: var(--muted);
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+    .footer-social-btn:hover { border-color: var(--fire); color: var(--fire-light); background: rgba(212,98,26,0.1); }
+    .footer-col h5 {
+      font-size: 0.6rem; letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--fire); margin-bottom: 1.4rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+    .footer-col a { color: var(--muted); font-size: 0.84rem; transition: color 0.3s; }
+    .footer-col a:hover { color: var(--amber); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { color: var(--muted); font-size: 0.74rem; }
+    .footer-divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--fire), transparent);
+      opacity: 0.3; margin-bottom: 2.5rem;
+    }
+
+    /* ══ FADE-UP ══════════════════════════════════════════ */
+    .fade-up {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up.d1 { transition-delay: 0.1s; }
+    .fade-up.d2 { transition-delay: 0.22s; }
+    .fade-up.d3 { transition-delay: 0.38s; }
+    .fade-up.d4 { transition-delay: 0.55s; }
+
+    /* ══ RESPONSIVE ══════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      section { padding: 6rem 2.5rem; }
+      #navbar, #navbar.solid { padding-left: 2.5rem; padding-right: 2.5rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 0 2.5rem; padding-top: 7rem; padding-bottom: 4rem; }
+      .hero-right { display: none; }
+      .hero-overlay {
+        background: linear-gradient(to bottom, rgba(11,7,4,0.85) 0%, rgba(11,7,4,0.6) 50%, rgba(11,7,4,0.92) 100%);
+      }
+      .nosotros-grid, .donaciones-intro, .contacto-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .proyectos-grid { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat { border-bottom: 1px solid var(--border); }
+      .stat:nth-child(2) { border-right: none; }
+      .stat:nth-child(3), .stat:nth-child(4) { border-bottom: none; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .scroll-hint { display: none; }
+      .redes-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      section { padding: 4.5rem 1.5rem; }
+      .hero-left { padding: 0 1.5rem; padding-top: 7rem; padding-bottom: 4rem; }
+      .hero-headline .outlined, .hero-headline .solid { font-size: clamp(4rem, 16vw, 6rem); }
+      .donaciones-cards { grid-template-columns: 1fr; }
+      .galeria-grid { grid-template-columns: 1fr 1fr; }
+      .galeria-item:nth-child(1) { grid-column: span 2; }
+      .galeria-item:nth-child(7) { grid-column: span 2; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .valores { grid-template-columns: 1fr; }
+      .stats-bar { padding: 2.5rem 1.5rem; }
+      .sec-num { font-size: 6rem; }
+      .marquee-wrap { padding: 0.7rem 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Grain filter -->
+  <svg class="grain-svg" aria-hidden="true">
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </svg>
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/573000000000?text=Hola%20Fundación%20Manos%20Kubilantes,%20me%20gustaría%20obtener%20más%20información." target="_blank" rel="noopener" class="wa-float" title="Escríbenos por WhatsApp">
+    <span class="wa-pulse"></span>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-brand">
+      <span class="nav-brand-main">Manos Kubilantes</span>
+      <span class="nav-brand-sub">Fundación Social Afrocolombiana</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#nosotros">Quiénes Somos</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#donaciones">Donar</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="#donaciones" class="nav-cta">Apóyanos</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-left">
+      <div class="hero-eyebrow fade-up">
+        <span></span>
+        Barranquilla, Colombia · Fundación Social Afrocolombiana
+      </div>
+      <div class="hero-headline">
+        <span class="outlined fade-up d1">MANOS</span>
+        <span class="solid fade-up d2">KUBILANTES</span>
+      </div>
+      <div class="hero-tagline fade-up d3">Cultura · Memoria · Resistencia</div>
+      <p class="hero-desc fade-up d3">
+        Preservamos y visibilizamos la cultura, los saberes y la memoria afrocolombiana. Trabajamos por el reconocimiento de las comunidades afro como patrimonio vivo de Colombia.
+      </p>
+      <div class="hero-btns fade-up d4">
+        <a href="#donaciones" class="btn-primary">
+          Apóyanos
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </a>
+        <a href="https://wa.me/573000000000?text=Hola%20Fundación%20Manos%20Kubilantes!" target="_blank" rel="noopener" class="btn-wa">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+        <a href="#nosotros" class="btn-outline">Conocer más</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-img-wrap">
+        <img class="hero-portrait" src="assets/img/retratos/cocinera-retrato-color.jpg" alt="Cocinera afrocolombiana" />
+        <div class="hero-img-border"></div>
+        <div class="hero-img-accent"></div>
+
+        <!-- Rotating circle text -->
+        <div class="hero-circle-wrap">
+          <svg viewBox="0 0 200 200">
+            <defs>
+              <path id="cp" d="M 100,100 m -72,0 a 72,72 0 1,1 144,0 a 72,72 0 1,1 -144,0"/>
+            </defs>
+            <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(212,98,26,0.2)" stroke-width="1"/>
+            <circle cx="100" cy="100" r="4" fill="var(--fire)" opacity="0.6"/>
+            <text fill="rgba(244,235,217,0.55)" font-size="10.5" letter-spacing="5.2" font-family="'Inter',sans-serif" font-weight="500">
+              <textPath href="#cp">CULTURA · MEMORIA · RESISTENCIA · IDENTIDAD ·</textPath>
+            </text>
+          </svg>
+        </div>
+
+        <!-- Stats glassmorphism card -->
+        <div class="hero-stats-card">
+          <div class="hero-stat-item">
+            <span class="hero-stat-num">+20</span>
+            <span class="hero-stat-lbl">Cocineras</span>
+          </div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-num">2</span>
+            <span class="hero-stat-lbl">Documentales</span>
+          </div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-num">+500</span>
+            <span class="hero-stat-lbl">Impactados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-hint-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-item"><span>CULTURA</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>MEMORIA</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>RESISTENCIA</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>IDENTIDAD</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>TERRITORIO</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>SABERES</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>FOGÓN</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>HERENCIA</span><div class="marquee-dot"></div></div>
+      <!-- Repeat for infinite loop -->
+      <div class="marquee-item"><span>CULTURA</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>MEMORIA</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>RESISTENCIA</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>IDENTIDAD</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>TERRITORIO</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>SABERES</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>FOGÓN</span><div class="marquee-dot"></div></div>
+      <div class="marquee-item"><span>HERENCIA</span><div class="marquee-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar afro-pattern">
+    <div class="stats-inner">
+      <div class="stat fade-up">
+        <div class="stat-num"><span class="counter" data-target="20" data-prefix="+">+20</span></div>
+        <div class="stat-lbl">Cocineras Entrevistadas</div>
+      </div>
+      <div class="stat fade-up d1">
+        <div class="stat-num"><span class="counter" data-target="2">2</span></div>
+        <div class="stat-lbl">Proyectos Documentales</div>
+      </div>
+      <div class="stat fade-up d2">
+        <div class="stat-num"><span class="counter" data-target="500" data-prefix="+">+500</span></div>
+        <div class="stat-lbl">Personas Impactadas</div>
+      </div>
+      <div class="stat fade-up d3">
+        <div class="stat-num">∞</div>
+        <div class="stat-lbl">Herencia que Preservamos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIÉNES SOMOS -->
+  <section id="nosotros">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-num">01</div>
+        <div class="sec-tag fade-up">Quiénes Somos</div>
+        <h2 class="sec-title fade-up d1">Una fundación que<br><em>preserva la herencia</em></h2>
+      </div>
+
+      <div class="nosotros-grid">
+        <div class="nosotros-img-wrap fade-up">
+          <img src="assets/img/retratos/cocinera-retrato-color.jpg" alt="Cocinera afrocolombiana — Fundación Manos Kubilantes" loading="lazy" />
+          <div class="nosotros-img-border"></div>
+          <div class="nosotros-img-accent"></div>
+        </div>
+
+        <div class="fade-up d2">
+          <div class="sec-body">
+            <p>
+              La <strong style="color:var(--text)">Fundación Social Afrocolombiana Manos Kubilantes</strong> es una organización dedicada a la preservación, promoción y visibilización de la cultura, los saberes y la memoria de las comunidades afrocolombianas.
+            </p>
+            <p>
+              Trabajamos desde el territorio con las comunidades, reconociendo a sus mujeres, sus mayores y sus tradiciones como patrimonio vivo e irreemplazable de Colombia. Nuestra labor abarca la educación, la cultura, la gastronomía ancestral y la memoria oral.
+            </p>
+            <p>
+              Creemos que cada receta, cada relato y cada canto guardan la historia de un pueblo que ha resistido y que sigue construyendo identidad desde sus raíces.
+            </p>
+          </div>
+
+          <div class="valores">
+            <div class="valor fade-up d1">
+              <div class="valor-icon">🔥</div>
+              <h4>Identidad</h4>
+              <p>Afirmamos y celebramos la identidad afrocolombiana en todas sus expresiones culturales.</p>
+            </div>
+            <div class="valor fade-up d2">
+              <div class="valor-icon">✊</div>
+              <h4>Resistencia</h4>
+              <p>Visibilizamos las luchas y logros de las comunidades afro como parte de la historia de Colombia.</p>
+            </div>
+            <div class="valor fade-up d3">
+              <div class="valor-icon">🌿</div>
+              <h4>Territorio</h4>
+              <p>Reconocemos la relación profunda entre las comunidades y sus territorios y saberes.</p>
+            </div>
+            <div class="valor fade-up d4">
+              <div class="valor-icon">🤝</div>
+              <h4>Comunidad</h4>
+              <p>Trabajamos con y para las comunidades, construyendo desde adentro sin imponer agendas externas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section id="proyectos">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-num">02</div>
+        <div class="sec-tag fade-up">Nuestros Proyectos</div>
+        <h2 class="sec-title fade-up d1">Iniciativas que<br><em>transforman</em></h2>
+      </div>
+
+      <div class="proyectos-grid fade-up d2">
+        <div class="proyecto-featured">
+          <img src="assets/img/eventos/expo-panel-retrato.jpg" alt="Sabores con Historias — Cocina y Memoria Afrocolombiana" loading="lazy" />
+          <div class="proyecto-featured-content">
+            <div class="proyecto-badge">Proyecto Destacado · 2024</div>
+            <h3>Sabores con Historias</h3>
+            <p>Cocina y Memoria Afrocolombiana — Proyecto documental en dos capítulos que rescata recetas, técnicas y relatos de cocineras guardianas de una tradición ancestral.</p>
+            <a href="https://www.youtube.com/@kumbilanteafro" target="_blank" rel="noopener" class="proyecto-link">
+              Ver Documental
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="proyectos-side">
+          <div class="proyecto-card">
+            <div class="proyecto-badge">Talleres</div>
+            <h4>Talleres de Cocina Ancestral</h4>
+            <p>Espacios de aprendizaje colectivo donde las mayores comparten saberes culinarios tradicionales con jóvenes de la comunidad, garantizando la transmisión intergeneracional.</p>
+          </div>
+          <div class="proyecto-card">
+            <div class="proyecto-badge">Memoria</div>
+            <h4>Círculos de Memoria Oral</h4>
+            <p>Sesiones de entrevistas y registro de historias de vida de mujeres afrocolombianas, preservando sus testimonios como patrimonio cultural inmaterial.</p>
+          </div>
+          <div class="proyecto-card">
+            <div class="proyecto-badge">Exposiciones</div>
+            <h4>Exposiciones y Eventos Culturales</h4>
+            <p>Muestras fotográficas, presentaciones y eventos públicos que llevan la cultura afrocolombiana a nuevos públicos y espacios institucionales.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <div class="quote-inner">
+      <blockquote>
+        "Sus rostros son testimonio vivo de una herencia que no se deja apagar. Cada mano que amasa, cada fogón encendido, es un acto de resistencia y amor."
+      </blockquote>
+      <cite>Fundación Social Afrocolombiana Manos Kubilantes</cite>
+    </div>
+  </div>
+
+  <!-- GALERÍA -->
+  <section id="galeria">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-num">03</div>
+        <div class="sec-tag fade-up">Galería</div>
+        <h2 class="sec-title fade-up d1">Imágenes de nuestra<br><em>comunidad</em></h2>
+      </div>
+    </div>
+    <div class="galeria-grid" style="padding:0 4rem;max-width:1600px;margin:0 auto;">
+      <div class="galeria-item fade-up">
+        <img src="assets/img/eventos/entrevistas-grupo-banner.jpg" alt="Grupo Sabores con Historias" loading="lazy" />
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item fade-up d1">
+        <img src="assets/img/retratos/cocinera-retrato-bw.jpg" alt="Retrato cocinera" loading="lazy" />
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item fade-up d2">
+        <img src="assets/img/preparacion/tamales-tradicionales.jpg" alt="Tamales tradicionales" loading="lazy" />
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item fade-up d3">
+        <img src="assets/img/preparacion/ingredientes-cocina.jpg" alt="Ingredientes" loading="lazy" />
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item fade-up">
+        <img src="assets/img/preparacion/maiz-masa.jpg" alt="Elaboración masa" loading="lazy" />
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item fade-up d1">
+        <img src="assets/img/preparacion/maiz-desgranando.jpg" alt="Maíz" loading="lazy" />
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item fade-up d2">
+        <img src="assets/img/eventos/entrevistas-circulo-01.jpg" alt="Círculo entrevistas" loading="lazy" />
+        <div class="galeria-overlay"></div>
+      </div>
+      <div class="galeria-item fade-up d3">
+        <img src="assets/img/eventos/expo-audiencia.jpg" alt="Evento exposición" loading="lazy" />
+        <div class="galeria-overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DONACIONES -->
+  <section id="donaciones">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-num">04</div>
+        <div class="sec-tag fade-up">Apóyanos</div>
+        <h2 class="sec-title fade-up d1">Tu apoyo hace<br><em>posible la cultura</em></h2>
+      </div>
+
+      <div class="donaciones-intro">
+        <div class="fade-up d1">
+          <div class="sec-body">
+            <p>La Fundación Manos Kubilantes trabaja para preservar la memoria y la cultura afrocolombiana. Con tu donación, ayudas a financiar documentales, talleres, entrevistas y exposiciones que visibilizan a las comunidades afro de Colombia.</p>
+            <p style="margin-top:1rem;">Cada aporte, grande o pequeño, es un acto de reconocimiento a una herencia que no debe apagarse.</p>
+          </div>
+          <div class="impacto-box fade-up d2" style="margin-top:2.5rem;">
+            <h3>¿Qué logramos con tu apoyo?</h3>
+            <ul class="impacto-list">
+              <li>Financiar la producción de nuevos capítulos documentales</li>
+              <li>Realizar talleres gratuitos de cocina ancestral en comunidades</li>
+              <li>Cubrir los costos de registro y entrevistas de memorias orales</li>
+              <li>Llevar exposiciones culturales a espacios públicos e institucionales</li>
+              <li>Apoyar a las cocineras y artistas afrocolombianas participantes</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="donaciones-img-wrap fade-up d2">
+          <img src="assets/img/retratos/cocinera-con-tamale.jpg" alt="Cocinera afrocolombiana" loading="lazy" />
+        </div>
+      </div>
+
+      <h3 class="fade-up" style="font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;margin-bottom:1.5rem;">Formas de donar</h3>
+      <div class="donaciones-cards">
+        <div class="donacion-card featured fade-up">
+          <div class="donacion-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+          <h4>Nequi / Daviplata</h4>
+          <p>La forma más rápida y sencilla de apoyarnos. Transfiere directamente desde tu app al número de la fundación.</p>
+          <div class="donacion-detail">
+            <strong>Número Nequi:</strong> 300 000 0000<br>
+            <strong>Nombre:</strong> Fundación Manos Kubilantes<br>
+            <strong>NIT:</strong> 000.000.000-0
+          </div>
+          <a href="https://wa.me/573000000000?text=Quiero%20hacer%20una%20donación%20a%20la%20fundación" target="_blank" rel="noopener" class="btn-wa" style="font-size:0.72rem;padding:0.75rem 1.4rem;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Confirmar por WhatsApp
+          </a>
+        </div>
+
+        <div class="donacion-card fade-up d1">
+          <div class="donacion-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <h4>Transferencia Bancaria</h4>
+          <p>Realiza una transferencia desde cualquier banco colombiano a la cuenta de la fundación.</p>
+          <div class="donacion-detail">
+            <strong>Banco:</strong> Bancolombia<br>
+            <strong>Tipo:</strong> Cuenta de Ahorros<br>
+            <strong>Número:</strong> 000-000000-00<br>
+            <strong>Titular:</strong> Fundación Manos Kubilantes
+          </div>
+          <a href="#contacto" class="btn-outline" style="font-size:0.72rem;padding:0.75rem 1.4rem;">¿Dudas? Contáctanos</a>
+        </div>
+
+        <div class="donacion-card fade-up d2">
+          <div class="donacion-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <h4>Pago en Especie</h4>
+          <p>¿Eres empresa o institución? También recibimos donaciones en especie: equipos de producción, materiales, transporte o servicios profesionales.</p>
+          <div class="donacion-detail">
+            <strong>Contáctanos para coordinar</strong><br>
+            la entrega de tu donación en especie<br>
+            y recibir tu certificado de donación.
+          </div>
+          <a href="mailto:contacto@manoskubilantes.org" class="btn-outline" style="font-size:0.72rem;padding:0.75rem 1.4rem;">Escríbenos por correo</a>
+        </div>
+
+        <div class="donacion-card fade-up d3">
+          <div class="donacion-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h4>Voluntariado</h4>
+          <p>Únete como voluntario. Buscamos comunicadores, fotógrafos, realizadores audiovisuales, diseñadores y personas comprometidas con la cultura afrocolombiana.</p>
+          <div class="donacion-detail">
+            <strong>Áreas:</strong> Audiovisual, Diseño,<br>
+            Comunicación, Educación,<br>
+            Trabajo Social, Logística
+          </div>
+          <a href="https://wa.me/573000000000?text=Quiero%20ser%20voluntario%20de%20Manos%20Kubilantes" target="_blank" rel="noopener" class="btn-wa" style="font-size:0.72rem;padding:0.75rem 1.4rem;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Quiero ser Voluntario
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-num">05</div>
+        <div class="sec-tag fade-up">Contacto</div>
+        <h2 class="sec-title fade-up d1">Hablemos ·<br><em>Estamos aquí</em></h2>
+      </div>
+
+      <div class="contacto-grid">
+        <div>
+          <div class="contacto-items fade-up d1">
+            <a href="https://wa.me/573000000000" target="_blank" rel="noopener" class="contacto-item">
+              <div class="contacto-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--wa-green)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </div>
+              <div>
+                <div class="contacto-item-label">WhatsApp</div>
+                <div class="contacto-item-value">+57 300 000 0000</div>
+                <div class="contacto-item-sub">Escríbenos directo · Respondemos rápido</div>
+              </div>
+            </a>
+
+            <a href="tel:+573000000000" class="contacto-item">
+              <div class="contacto-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.45 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9A16 16 0 0 0 15 16.09l1.05-1.05a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div>
+                <div class="contacto-item-label">Teléfono</div>
+                <div class="contacto-item-value">+57 300 000 0000</div>
+                <div class="contacto-item-sub">Lunes a Viernes · 8am – 6pm</div>
+              </div>
+            </a>
+
+            <a href="mailto:contacto@manoskubilantes.org" class="contacto-item">
+              <div class="contacto-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div>
+                <div class="contacto-item-label">Correo Electrónico</div>
+                <div class="contacto-item-value">contacto@manoskubilantes.org</div>
+                <div class="contacto-item-sub">Respondemos en menos de 48 horas</div>
+              </div>
+            </a>
+
+            <div class="contacto-item" style="cursor:default;">
+              <div class="contacto-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <div class="contacto-item-label">Ubicación</div>
+                <div class="contacto-item-value">Barranquilla, Colombia</div>
+                <div class="contacto-item-sub">Atlántico · Colombia</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fade-up d2" style="margin-top:2rem;">
+            <h4 style="font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--fire);margin-bottom:1rem;">Redes Sociales</h4>
+            <div class="redes-grid">
+              <a href="https://www.youtube.com/@kumbilanteafro" target="_blank" rel="noopener" class="red-social youtube">
+                <div class="red-icon yt-bg">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+                </div>
+                <div><div class="red-name">YouTube</div><div class="red-handle">@kumbilanteafro</div></div>
+              </a>
+              <a href="https://www.instagram.com/manoskubilantes" target="_blank" rel="noopener" class="red-social instagram">
+                <div class="red-icon ig-bg">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </div>
+                <div><div class="red-name">Instagram</div><div class="red-handle">@manoskubilantes</div></div>
+              </a>
+              <a href="https://www.facebook.com/manoskubilantes" target="_blank" rel="noopener" class="red-social facebook">
+                <div class="red-icon fb-bg">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </div>
+                <div><div class="red-name">Facebook</div><div class="red-handle">Manos Kubilantes</div></div>
+              </a>
+              <a href="https://wa.me/573000000000" target="_blank" rel="noopener" class="red-social whatsapp">
+                <div class="red-icon wa-bg">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </div>
+                <div><div class="red-name">WhatsApp</div><div class="red-handle">+57 300 000 0000</div></div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-up d3">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Envíanos un mensaje</h3>
+          <p style="font-size:0.86rem;color:var(--muted);margin-bottom:2rem;line-height:1.75;">Para colaboraciones, alianzas, donaciones o simplemente para conectar. Todos los mensajes son respondidos personalmente.</p>
+          <form class="form-contacto" onsubmit="return handleForm(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" placeholder="tu@correo.com" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="asunto">Asunto</label>
+              <select id="asunto" name="asunto">
+                <option value="donacion">Quiero hacer una donación</option>
+                <option value="voluntariado">Quiero ser voluntario/a</option>
+                <option value="alianza">Propuesta de alianza</option>
+                <option value="prensa">Prensa / Medios</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mensaje">Mensaje</label>
+              <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos cómo puedes apoyar o qué necesitas..." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="border:none;width:100%;justify-content:center;font-size:0.82rem;">
+              Enviar Mensaje
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-divider"></div>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">Manos Kubilantes</div>
+          <div class="footer-logo-sub">Fundación Social Afrocolombiana</div>
+          <p>Preservamos y visibilizamos la cultura, los saberes y la memoria afrocolombiana desde el territorio y la comunidad.</p>
+          <div class="footer-socials">
+            <a href="https://www.youtube.com/@kumbilanteafro" target="_blank" rel="noopener" class="footer-social-btn" title="YouTube">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/manoskubilantes" target="_blank" rel="noopener" class="footer-social-btn" title="Instagram">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/manoskubilantes" target="_blank" rel="noopener" class="footer-social-btn" title="Facebook">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://wa.me/573000000000" target="_blank" rel="noopener" class="footer-social-btn" title="WhatsApp">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>La Fundación</h5>
+          <ul>
+            <li><a href="#nosotros">Quiénes Somos</a></li>
+            <li><a href="#nosotros">Misión y Valores</a></li>
+            <li><a href="#proyectos">Nuestros Proyectos</a></li>
+            <li><a href="#galeria">Galería</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Apóyanos</h5>
+          <ul>
+            <li><a href="#donaciones">Donar Ahora</a></li>
+            <li><a href="#donaciones">Nequi / Daviplata</a></li>
+            <li><a href="#donaciones">Transferencia</a></li>
+            <li><a href="#donaciones">Voluntariado</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Contacto</h5>
+          <ul>
+            <li><a href="https://wa.me/573000000000" target="_blank">WhatsApp</a></li>
+            <li><a href="tel:+573000000000">+57 300 000 0000</a></li>
+            <li><a href="mailto:contacto@manoskubilantes.org">Email</a></li>
+            <li><a href="https://www.youtube.com/@kumbilanteafro" target="_blank">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 Fundación Social Afrocolombiana Manos Kubilantes · Barranquilla, Colombia</p>
+        <p style="color:var(--fire);font-size:0.7rem;letter-spacing:0.1em;">Cultura · Memoria · Resistencia Afrocolombiana</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Custom Cursor ─────────────────────────────── */
+    const dot  = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let rx = -20, ry = -20;
+
+    document.addEventListener('mousemove', e => {
+      dot.style.left  = e.clientX + 'px';
+      dot.style.top   = e.clientY + 'px';
+      rx += (e.clientX - rx) * 0.18;
+      ry += (e.clientY - ry) * 0.18;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+    });
+
+    function trackRing() {
+      requestAnimationFrame(trackRing);
+    }
+    trackRing();
+
+    document.querySelectorAll('a, button, .galeria-item, .valor, .proyecto-card').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+    });
+
+    /* ── Nav on scroll ─────────────────────────────── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('solid', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── Hero bg parallax + zoom ───────────────────── */
+    const heroBg = document.getElementById('heroBg');
+    setTimeout(() => heroBg.classList.add('zoomed'), 80);
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < window.innerHeight) {
+        heroBg.style.transform = `scale(1) translateY(${window.scrollY * 0.25}px)`;
+      }
+    }, { passive: true });
+
+    /* ── Animated counters ─────────────────────────── */
+    function animateCounter(el) {
+      const raw    = el.dataset.target;
+      const prefix = el.dataset.prefix || '';
+      const target = parseInt(raw, 10);
+      const dur    = 1800;
+      const start  = performance.now();
+      (function step(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + Math.floor(e * target);
+        if (p < 1) requestAnimationFrame(step);
+      })(start);
+    }
+
+    const cntObs = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { animateCounter(en.target); cntObs.unobserve(en.target); }
+      });
+    }, { threshold: 0.6 });
+    document.querySelectorAll('.counter[data-target]').forEach(el => cntObs.observe(el));
+
+    /* ── Fade-up on scroll ─────────────────────────── */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+    /* ── Gallery 3D tilt ───────────────────────────── */
+    document.querySelectorAll('.galeria-item').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.03)`;
+        card.style.zIndex = '2';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.zIndex = '';
+      });
+    });
+
+    /* ── Form → WhatsApp ───────────────────────────── */
+    function handleForm(e) {
+      e.preventDefault();
+      const nombre  = document.getElementById('nombre').value;
+      const asunto  = document.getElementById('asunto').value;
+      const mensaje = document.getElementById('mensaje').value;
+      const text = encodeURIComponent(
+        `Hola Fundación Manos Kubilantes!\n\nNombre: ${nombre}\nAsunto: ${asunto}\n\nMensaje: ${mensaje}`
+      );
+      window.open(`https://wa.me/573000000000?text=${text}`, '_blank');
+      return false;
+    }
+  </script>
+</body>
+</html>
