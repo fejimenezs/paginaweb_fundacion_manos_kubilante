@@ -563,6 +563,51 @@
     }
     .proyecto-card p { font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
 
+    /* ══ DOCUMENTAL ══════════════════════════════════════ */
+    #documental {
+      background: var(--dark2);
+      border-top: 1px solid var(--border);
+    }
+    .documental-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .doc-card { display: flex; flex-direction: column; gap: 1.2rem; }
+    .video-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: #000;
+    }
+    .video-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .doc-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--fire);
+    }
+    .doc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .doc-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    @media (max-width: 768px) {
+      .documental-grid { grid-template-columns: 1fr; }
+    }
+
     /* ══ QUOTE ═══════════════════════════════════════════ */
     .quote-section {
       padding: 7rem 4rem;
@@ -933,6 +978,7 @@
     <ul class="nav-links">
       <li><a href="#nosotros">Quiénes Somos</a></li>
       <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#documental">Documental</a></li>
       <li><a href="#galeria">Galería</a></li>
       <li><a href="#donaciones">Donar</a></li>
       <li><a href="#contacto">Contacto</a></li>
@@ -1160,6 +1206,49 @@
     </div>
   </section>
 
+  <!-- DOCUMENTAL -->
+  <section id="documental">
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-num">03</div>
+        <div class="sec-tag fade-up">El Documental</div>
+        <h2 class="sec-title fade-up d1">Sabores con Historias —<br><em>Míralo aquí</em></h2>
+      </div>
+
+      <div class="documental-grid">
+        <div class="doc-card fade-up d1">
+          <div class="video-wrap">
+            <iframe
+              src="https://www.youtube.com/embed/jz0cPZ5Ljpw"
+              title="Capítulo 1: Sabores con Historias — Cocina y Memoria Afrocolombiana"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="doc-label">Capítulo 01 · Documental</div>
+          <div class="doc-title">Sabores con Historias</div>
+          <p class="doc-desc">Cocina y Memoria Afrocolombiana — Primer capítulo del documental producido por la Fundación Social Afrocolombiana Manos Kubilantes.</p>
+        </div>
+
+        <div class="doc-card fade-up d2">
+          <div class="video-wrap">
+            <iframe
+              src="https://www.youtube.com/embed/oQ1j_DkDOXM"
+              title="Capítulo 2: Arroz Arrecho — Sabores con Historias"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="doc-label">Capítulo 02 · Documental</div>
+          <div class="doc-title">Sabores con Historias</div>
+          <p class="doc-desc">Cocina y Memoria Afrocolombiana — Segundo capítulo del documental. Más recetas, más historias, más resistencia desde el fogón.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- QUOTE -->
   <div class="quote-section">
     <div class="quote-inner">
@@ -1174,7 +1263,7 @@
   <section id="galeria">
     <div class="inner">
       <div class="sec-head">
-        <div class="sec-num">03</div>
+        <div class="sec-num">04</div>
         <div class="sec-tag fade-up">Galería</div>
         <h2 class="sec-title fade-up d1">Imágenes de nuestra<br><em>comunidad</em></h2>
       </div>
@@ -1219,7 +1308,7 @@
   <section id="donaciones">
     <div class="inner">
       <div class="sec-head">
-        <div class="sec-num">04</div>
+        <div class="sec-num">05</div>
         <div class="sec-tag fade-up">Apóyanos</div>
         <h2 class="sec-title fade-up d1">Tu apoyo hace<br><em>posible la cultura</em></h2>
       </div>
@@ -1319,7 +1408,7 @@
   <section id="contacto">
     <div class="inner">
       <div class="sec-head">
-        <div class="sec-num">05</div>
+        <div class="sec-num">06</div>
         <div class="sec-tag fade-up">Contacto</div>
         <h2 class="sec-title fade-up d1">Hablemos ·<br><em>Estamos aquí</em></h2>
       </div>
